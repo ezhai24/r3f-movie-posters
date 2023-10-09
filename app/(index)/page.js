@@ -15,6 +15,7 @@ const POSTER_DISTANCE = POSTER_SIZE.width + POSTER_SPACING;
 const Poster = ({
   initialPosition,
   color,
+  posterBounds: [leftPosterBound, rightPosterBound],
   scrollBounds: [leftScrollBound, rightScrollBound],
 }) => {
   const { viewport } = useThree();
@@ -32,13 +33,14 @@ const Poster = ({
       const updatedX = memo.dragStart + movementX + memo.movementOffset;
       api.start({ position: [updatedX, 0, 0] });
 
+      // Rotate posters when scroll bounds are crossed
       if (updatedX < leftScrollBound) {
-        api.set({ position: [rightScrollBound, 0, 0] });
-        return { dragStart: rightScrollBound, movementOffset: -1 * movementX };
+        api.set({ position: [rightPosterBound, 0, 0] });
+        return { dragStart: rightPosterBound, movementOffset: -1 * movementX };
       }
       if (updatedX > rightScrollBound) {
-        api.set({ position: [leftScrollBound, 0, 0] });
-        return { dragStart: leftScrollBound, movementOffset: -1 * movementX };
+        api.set({ position: [leftPosterBound, 0, 0] });
+        return { dragStart: leftPosterBound, movementOffset: -1 * movementX };
       }
     },
     {
@@ -56,8 +58,10 @@ const Poster = ({
 };
 
 const Scene = () => {
-  const posters = ["orange", "blue"];
-  const postersStart = -Math.floor(posters.length / 2) * POSTER_DISTANCE;
+  const posters = ["orange", "blue", "green"];
+  const postersPositionFactor =
+    Math.floor(posters.length / 2) * POSTER_DISTANCE;
+  const posterBounds = [-postersPositionFactor, postersPositionFactor];
 
   const scrollBoundsFactor = Math.ceil(posters.length / 2) * POSTER_DISTANCE;
   const scrollBounds = [-scrollBoundsFactor, scrollBoundsFactor];
@@ -68,8 +72,9 @@ const Scene = () => {
       {posters.map((poster, i) => (
         <Poster
           key={poster}
-          initialPosition={[postersStart + i * POSTER_DISTANCE, 0, 0]}
+          initialPosition={[posterBounds[0] + i * POSTER_DISTANCE, 0, 0]}
           color={poster}
+          posterBounds={posterBounds}
           scrollBounds={scrollBounds}
         />
       ))}
