@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@next/font": "13.5.4",
+    "@react-spring/three": "^9.7.3",
     "@react-three/fiber": "^8.14.5",
+    "@use-gesture/react": "^10.3.0",
     "eslint": "8.51.0",
     "eslint-config-next": "13.5.4",
     "next": "13.5.4",
