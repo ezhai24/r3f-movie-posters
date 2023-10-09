@@ -2,6 +2,10 @@ import { animated, useSpring } from "@react-spring/three";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useDrag } from "@use-gesture/react";
 
+const POSTER_SIZE = { width: 1, height: 1 };
+const POSTER_SPACING = 1;
+const POSTER_DISTANCE = POSTER_SIZE.width + POSTER_SPACING;
+
 const Poster = ({ initialPosition, color }) => {
   const { viewport } = useThree();
   const [spring, api] = useSpring(() => ({ position: initialPosition }));
@@ -22,19 +26,26 @@ const Poster = ({ initialPosition, color }) => {
 
   return (
     <animated.mesh {...spring}>
-      <planeGeometry />
+      <planeGeometry args={[POSTER_SIZE.width, POSTER_SIZE.height]} />
       <meshStandardMaterial color={color} />
     </animated.mesh>
   );
 };
 
 const Scene = () => {
+  const posters = ["orange", "blue"];
+  const postersStart = -Math.floor(posters.length / 2) * POSTER_DISTANCE;
+
   return (
     <>
       <ambientLight />
-
-      <Poster initialPosition={[-2, 0, 0]} color="orange" />
-      <Poster initialPosition={[0, 0, 0]} color="blue" />
+      {posters.map((poster, i) => (
+        <Poster
+          key={poster}
+          initialPosition={[postersStart + i * POSTER_DISTANCE, 0, 0]}
+          color={poster}
+        />
+      ))}
     </>
   );
 };
