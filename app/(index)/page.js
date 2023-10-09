@@ -25,6 +25,7 @@ const Poster = ({
       movement: [movementX],
       first,
       memo = { dragStart: 0, movementOffset: 0 },
+      active,
     }) => {
       if (first) {
         const [currentX] = spring.position.get();
@@ -42,6 +43,13 @@ const Poster = ({
         api.set({ position: [leftPosterBound, 0, 0] });
         return { dragStart: leftPosterBound, movementOffset: -1 * movementX };
       }
+
+      // On drag end, snap posters to nearest snapping point
+      if (!active) {
+        const snappingPoint =
+          POSTER_DISTANCE * Math.round(updatedX / POSTER_DISTANCE);
+        api.start({ position: [snappingPoint, 0, 0] });
+      }
     },
     {
       target: window.document,
@@ -58,7 +66,7 @@ const Poster = ({
 };
 
 const Scene = () => {
-  const posters = ["orange", "blue", "green"];
+  const posters = ["orange", "blue", "green", "pink"];
   const postersPositionFactor =
     Math.floor(posters.length / 2) * POSTER_DISTANCE;
   const posterBounds = [-postersPositionFactor, postersPositionFactor];
