@@ -1,5 +1,15 @@
+import { Canvas } from "@react-three/fiber";
+
 const Home = () => {
-  return <></>;
+  return (
+    <Canvas>
+      <ambientLight />
+      <mesh>
+        <planeGeometry />
+        <meshStandardMaterial />
+      </mesh>
+    </Canvas>
+  );
 };
 
 export default Home;
