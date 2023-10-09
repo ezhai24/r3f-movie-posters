@@ -4,6 +4,10 @@ import { animated, useSpring } from "@react-spring/three";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useDrag } from "@use-gesture/react";
 
+import Debug from "./Debug";
+
+const DEBUG = false;
+
 const POSTER_SIZE = { width: 1, height: 1 };
 const POSTER_SPACING = 1;
 const POSTER_DISTANCE = POSTER_SIZE.width + POSTER_SPACING;
@@ -69,6 +73,14 @@ const Scene = () => {
           scrollBounds={scrollBounds}
         />
       ))}
+
+      {DEBUG && (
+        <Debug
+          posterSize={POSTER_SIZE}
+          posterDistance={POSTER_DISTANCE}
+          scrollBounds={scrollBounds}
+        />
+      )}
     </>
   );
 };
