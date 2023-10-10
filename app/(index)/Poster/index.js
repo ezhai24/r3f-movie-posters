@@ -2,7 +2,9 @@ import { animated, useSpring } from "@react-spring/three";
 import { useThree } from "@react-three/fiber";
 import { useDrag } from "@use-gesture/react";
 
-export const POSTER_SIZE = { width: 1, height: 1 };
+import "./shader";
+
+export const POSTER_SIZE = { width: 3.75, height: 5 };
 export const POSTER_SPACING = 1;
 export const POSTER_DISTANCE = POSTER_SIZE.width + POSTER_SPACING;
 
@@ -82,8 +84,8 @@ export const Poster = ({
 
   return (
     <animated.mesh {...spring}>
-      <planeGeometry args={[POSTER_SIZE.width, POSTER_SIZE.height]} />
-      <meshStandardMaterial color={color} />
+      <planeGeometry args={[POSTER_SIZE.width, POSTER_SIZE.height, 64, 64]} />
+      <posterMaterial uColor={color} />
     </animated.mesh>
   );
 };
