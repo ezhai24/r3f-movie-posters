@@ -1,19 +1,23 @@
+import * as THREE from "three";
+
 import { animated, useSpring } from "@react-spring/three";
-import { useThree } from "@react-three/fiber";
+import { useThree, useLoader } from "@react-three/fiber";
 import { useDrag } from "@use-gesture/react";
 
 import "./shader";
 
-export const POSTER_SIZE = { width: 3.75, height: 5 };
-export const POSTER_SPACING = 1;
+export const POSTER_SIZE = { width: 3.5, height: 5 };
+export const POSTER_SPACING = 0.9;
 export const POSTER_DISTANCE = POSTER_SIZE.width + POSTER_SPACING;
 
 export const Poster = ({
-  color,
+  posterUrl,
   initialX,
   postersGroupWidth,
   scrollBounds: [leftScrollBound, rightScrollBound],
 }) => {
+  const [posterImage] = useLoader(THREE.TextureLoader, [posterUrl]);
+
   const { viewport } = useThree();
   const [spring, api] = useSpring(() => ({
     position: [initialX, 0, 0],
@@ -83,7 +87,7 @@ export const Poster = ({
   return (
     <animated.mesh {...spring}>
       <planeGeometry args={[POSTER_SIZE.width, POSTER_SIZE.height, 64, 64]} />
-      <posterMaterial uColor={color} />
+      <posterMaterial uTexture={posterImage} />
     </animated.mesh>
   );
 };

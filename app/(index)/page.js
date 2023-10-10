@@ -12,12 +12,12 @@ const DEBUG = false;
 
 const Scene = () => {
   const posters = [
-    new THREE.Vector3(1, 0, 0),
-    new THREE.Vector3(0, 1, 0),
-    new THREE.Vector3(0, 0, 1),
-    new THREE.Vector3(1, 1, 0),
-    new THREE.Vector3(1, 0, 1),
-    new THREE.Vector3(0, 1, 1),
+    "./posters/parent-trap.jpeg",
+    "./posters/barbie.jpeg",
+    "./posters/alita.jpeg",
+    "./posters/every.jpeg",
+    "./posters/platform.jpg",
+    "./posters/nysm.jpg",
   ];
 
   const posterGroupY = 0.25;
@@ -39,12 +39,11 @@ const Scene = () => {
 
   return (
     <>
-      <ambientLight />
       <animated.group {...spring}>
         {posters.map((poster, i) => (
           <Poster
-            key={[poster.x, poster.y, poster.z]}
-            color={poster}
+            key={poster}
+            posterUrl={poster}
             initialX={
               -Math.floor(posters.length / 2) * POSTER_DISTANCE +
               i * POSTER_DISTANCE
@@ -69,7 +68,7 @@ const Scene = () => {
 
 const Home = () => {
   return (
-    <Canvas style={{ touchAction: "none" }}>
+    <Canvas style={{ backgroundColor: "#F5F0EE", touchAction: "none" }} linear>
       <Scene />
     </Canvas>
   );

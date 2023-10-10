@@ -1,8 +1,15 @@
+import * as THREE from "three";
+
 import { extend } from "@react-three/fiber";
 import { shaderMaterial } from "@react-three/drei";
+import glsl from "glslify";
 
-const vertexShader = `
+const vertexShader = glsl`
+varying vec2 vUv;
+
 void main(){
+  vUv = uv;
+
   float distanceFromCenter = abs(
     (modelMatrix * vec4(position, 1.0)).x
   );
@@ -12,14 +19,18 @@ void main(){
   gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
 }`;
 
-const fragmentShader = `
-uniform vec3 uColor;
+const fragmentShader = glsl`
+varying vec2 vUv;
+
+uniform sampler2D uTexture;
+
 void main() {
-  gl_FragColor = vec4(uColor, 1.0);
+  vec3 texture = texture2D(uTexture, vUv).rgb;
+  gl_FragColor = vec4(texture, 1.0);
 }`;
 
 const PosterMaterial = shaderMaterial(
-  { uColor: [0.0, 0.0, 0.0] },
+  { uTexture: new THREE.Texture() },
   vertexShader,
   fragmentShader
 );
