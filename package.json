@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/core": "^7.23.0",
     "@next/font": "13.5.4",
     "@react-spring/three": "^9.3.0",
     "@react-three/drei": "^9.87.1",
@@ -22,7 +23,10 @@
     "three": "^0.157.0"
   },
   "devDependencies": {
+    "babel-plugin-glsl": "^1.0.0",
     "eslint-config-prettier": "^9.0.0",
+    "glsl-noise": "^0.0.0",
+    "glslify": "^7.1.1",
     "prettier": "^3.0.3"
   }
 }
