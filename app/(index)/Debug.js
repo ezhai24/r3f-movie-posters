@@ -1,4 +1,7 @@
+import "./Poster/shader";
+
 const Debug = ({
+  posterGroupY = 0,
   posterSize,
   posterDistance,
   scrollBounds: [leftScrollBound, rightScrollBound],
@@ -10,9 +13,9 @@ const Debug = ({
   return (
     <>
       {debugPosterPositions.map((x) => (
-        <mesh key={x} position={[x, 0, -0.01]}>
+        <mesh key={x} position={[x, posterGroupY, -0.01]}>
           <planeGeometry args={[posterSize.width, posterSize.height]} />
-          <meshStandardMaterial color="#f0f0f0" />
+          <posterMaterial />
         </mesh>
       ))}
     </>

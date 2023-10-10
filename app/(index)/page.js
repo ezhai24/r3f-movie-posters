@@ -63,6 +63,7 @@ const Scene = () => {
 
       {DEBUG && (
         <Debug
+          posterGroupY={posterGroupY}
           posterSize={POSTER_SIZE}
           posterDistance={POSTER_DISTANCE}
           scrollBounds={scrollBounds}
