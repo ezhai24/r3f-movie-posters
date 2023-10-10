@@ -149,7 +149,7 @@ const Scene = () => {
 
 const Home = () => {
   return (
-    <Canvas>
+    <Canvas style={{ touchAction: "none" }}>
       <Scene />
     </Canvas>
   );
