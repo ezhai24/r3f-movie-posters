@@ -103,8 +103,14 @@ const Scene = () => {
   const { viewport } = useThree();
   const [spring, api] = useSpring(() => ({ position: [0, 0, 0] }));
   useDrag(
-    ({ offset: [offsetX] }) => {
+    ({ offset: [offsetX], last }) => {
       api.set({ position: [offsetX, 0, 0] });
+
+      if (last) {
+        const snappingPoint =
+          POSTER_DISTANCE * Math.round(offsetX / POSTER_DISTANCE);
+        api.start({ position: [snappingPoint, 0, 0] });
+      }
     },
     {
       target: window.document,
