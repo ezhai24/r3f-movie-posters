@@ -19,15 +19,11 @@ export const Poster = ({
     position: [initialX, 0, 0],
   }));
   useDrag(
-    ({ offset: [offsetX] }) => {
-      const posterX = offsetX + spring.position.get()[0];
-
-      // If the poster is within the scroll bounds, no adjustments
-      // need to be made. We maintain the offset it has from the
-      // poster group center's position.
-      if (leftScrollBound <= posterX && posterX <= rightScrollBound) {
-        return;
-      }
+    ({ offset: [posterGroupX], active }) => {
+      // The position of this spring is the poster's
+      // offset from the poster group's center
+      const [offsetX] = spring.position.get();
+      const posterX = posterGroupX + offsetX;
 
       // Calculate the number of times the poster has crossed a
       // scroll bound.
@@ -40,23 +36,17 @@ export const Poster = ({
       // lSB-2*pGW  lSB-pgW     lSB  0  rSB     lSB+pGW  lSB+2*pgW
       //
       // Numerically we can calculate this as:
-      // - The position of the poster with no adjustments = the
-      //   position of the poster group center + the distance
-      //   between the poster group center and the poster
-      //   = offsetX + initialX
-      // - Minus the distance between the screen center and the bound
+      // - The position of the poster with no adjustments = posterX
+      // - Minus the distance between the screen center and the
+      //   respective bound (lSB or rSB)
       // - Divided by the poster group's width (pGW)
       // - Rounded to the next upper number (ie. -1.2 -> -2, 1.2 -> 2).
       //   This means ceiling for positive numbers and flooring for
       //   negative numbers.
       const numCrosses =
         posterX > rightScrollBound
-          ? Math.ceil(
-              (offsetX + initialX - rightScrollBound) / postersGroupWidth
-            )
-          : Math.floor(
-              (offsetX + initialX - leftScrollBound) / postersGroupWidth
-            );
+          ? Math.ceil((posterX - rightScrollBound) / postersGroupWidth)
+          : Math.floor((posterX - leftScrollBound) / postersGroupWidth);
 
       // Adjust the position of the poster in relation to the poster
       // group center's position.
@@ -71,10 +61,18 @@ export const Poster = ({
       //   necessitates an adjustment to the far left. Multiply by
       //   -1 to account for this inversion.
       // - Offset by the distance between the poster group center
-      //   and the poster (initialX)
+      //   and the poster (offsetX)
       api.set({
-        position: [postersGroupWidth * numCrosses * -1 + initialX, 0, 0],
+        position: [postersGroupWidth * numCrosses * -1 + offsetX, 0, 0],
       });
+
+      if (!active) {
+        const snappingPoint =
+          POSTER_DISTANCE * Math.round(posterX / POSTER_DISTANCE);
+        const snappingOffset = posterX - snappingPoint;
+
+        api.start({ position: [offsetX - snappingOffset, 0, 0] });
+      }
     },
     {
       target: window.document,
