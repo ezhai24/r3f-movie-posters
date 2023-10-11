@@ -1,6 +1,5 @@
 "use client";
 
-import * as THREE from "three";
 import { animated, useSpring } from "@react-spring/three";
 import { Canvas, useThree } from "@react-three/fiber";
 import { useDrag } from "@use-gesture/react";
