@@ -17,6 +17,7 @@
     "@use-gesture/react": "^10.3.0",
     "eslint": "8.51.0",
     "eslint-config-next": "13.5.4",
+    "glsl-fast-gaussian-blur": "^1.0.2",
     "next": "13.5.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",

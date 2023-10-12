@@ -4,7 +4,9 @@ import { animated, useSpring } from "@react-spring/three";
 import { useThree, useLoader } from "@react-three/fiber";
 import { useDrag } from "@use-gesture/react";
 
+import PlatformPoster from "./PlatformPoster";
 import "./shader";
+import { useRef } from "react";
 
 export const POSTER_SIZE = { width: 3.5, height: 5 };
 export const POSTER_SPACING = 0.9;
@@ -84,11 +86,16 @@ export const Poster = ({
     }
   );
 
+  const posterRef = useRef();
+
   return (
-    <animated.mesh {...spring}>
-      <planeGeometry args={[POSTER_SIZE.width, POSTER_SIZE.height, 64, 64]} />
-      <posterMaterial uTexture={posterImage} />
-    </animated.mesh>
+    <>
+      <PlatformPoster portalScreen={posterRef} />
+      <animated.mesh ref={posterRef} {...spring}>
+        <planeGeometry args={[POSTER_SIZE.width, POSTER_SIZE.height, 64, 64]} />
+        <meshStandardMaterial />
+      </animated.mesh>
+    </>
   );
 };
 
